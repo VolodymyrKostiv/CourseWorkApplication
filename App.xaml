@@ -1,0 +1,29 @@
+﻿<Application x:Class="CourseWorkApplication.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:CourseWorkApplication"
+             xmlns:view="clr-namespace:CourseWorkApplication.View"
+             xmlns:viewmodel="clr-namespace:CourseWorkApplication.ViewModel">
+    <Application.Resources>
+        <!--<ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="\Styles\Common.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>-->
+        <DataTemplate DataType="{x:Type viewmodel:CreateReceiptViewModel}">
+            <view:CreateReceiptView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodel:CheckReceiptsViewModel}">
+            <view:CheckReceiptsView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodel:CreateSupplyOrderViewModel}">
+            <view:CreateSupplyOrderView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodel:CheckSupplyOrdersViewModel}">
+            <view:CheckSupplyOrdersView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewmodel:CheckStorageViewModel}">
+            <view:CheckStorageView />
+        </DataTemplate>
+    </Application.Resources>
+</Application>
