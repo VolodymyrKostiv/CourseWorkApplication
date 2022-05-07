@@ -5,25 +5,26 @@
              xmlns:view="clr-namespace:CourseWorkApplication.View"
              xmlns:viewmodel="clr-namespace:CourseWorkApplication.ViewModel">
     <Application.Resources>
-        <!--<ResourceDictionary>
+        <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="\Styles\Common.xaml" />
+                <ResourceDictionary Source="/Styles/Common.xaml" />
             </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>-->
-        <DataTemplate DataType="{x:Type viewmodel:CreateReceiptViewModel}">
-            <view:CreateReceiptView />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type viewmodel:CheckReceiptsViewModel}">
-            <view:CheckReceiptsView />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type viewmodel:CreateSupplyOrderViewModel}">
-            <view:CreateSupplyOrderView />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type viewmodel:CheckSupplyOrdersViewModel}">
-            <view:CheckSupplyOrdersView />
-        </DataTemplate>
-        <DataTemplate DataType="{x:Type viewmodel:CheckStorageViewModel}">
-            <view:CheckStorageView />
-        </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodel:CreateReceiptViewModel}">
+                <view:CreateReceiptView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodel:CheckReceiptsViewModel}">
+                <view:CheckReceiptsView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodel:CreateSupplyOrderViewModel}">
+                <view:CreateSupplyOrderView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodel:CheckSupplyOrdersViewModel}">
+                <view:CheckSupplyOrdersView />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodel:CheckStorageViewModel}">
+                <view:CheckStorageView />
+            </DataTemplate>
+        </ResourceDictionary>
     </Application.Resources>
+
 </Application>

@@ -2,28 +2,32 @@
 using CourseWorkApplication.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows.Data;
 
 namespace CourseWorkApplication.ViewModel
 {
     public class CheckStorageViewModel : ViewModelBase
     {
-        public IEnumerable<Product> Products { get; set; }
+        public IEnumerable<ShopStorageProduct> ShopStorageProducts { get; set; }
 
-        private IHttpAPIHelper<Product> httpAPIHelper;
+        public ICollectionView ShopStorageProductsView { get; set; }
+
+        private IHttpAPIHelper<ShopStorageProduct> httpAPIHelper;
 
         public CheckStorageViewModel()
         {
-            httpAPIHelper = new HttpAPIHelper<Product>();
+            httpAPIHelper = new HttpAPIHelper<ShopStorageProduct>();
             LoadPurchaseOrders();
+            ShopStorageProductsView = CollectionViewSource.GetDefaultView(ShopStorageProducts);
         }
 
         public async void LoadPurchaseOrders()
         {
             try
             {
-                //Products = await httpAPIHelper.GetMultipleItemsRequest("products");
-                Products = await httpAPIHelper.GetMultipleItemsRequest("storages/employee/1/");
-                OnPropertyChanged(nameof(Products));
+                ShopStorageProducts = await httpAPIHelper.GetMultipleItemsRequest("storages/employee?employeeID=1");
+                OnPropertyChanged(nameof(ShopStorageProducts));
             }
             catch (Exception ex)
             {

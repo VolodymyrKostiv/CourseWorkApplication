@@ -21,7 +21,7 @@ namespace CourseWorkApplication.ViewModel
         {
             try
             {
-                PurchaseOrders = await httpAPIHelper.GetMultipleItemsRequest("purchaseOrders");
+                PurchaseOrders = await httpAPIHelper.GetMultipleItemsRequest("purchaseOrders?employeeID=1");
                 OnPropertyChanged(nameof(PurchaseOrders));
             }
             catch (Exception ex) 
