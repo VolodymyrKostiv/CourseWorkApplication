@@ -5,13 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CourseWorkApplication.ViewModel
+namespace CourseWorkApplication.Services.ReceiptServices
 {
-    public class ViewModelBase : ObservableObject
+    public interface IReceiptService
     {
-        public virtual void UpdateBindings()
-        {
-
-        }
+        Task<bool> CreateReceipt(PurchaseOrder order);
     }
 }

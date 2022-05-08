@@ -25,5 +25,10 @@ namespace CourseWorkApplication.ViewModel
 
             UpdateCurrentViewModelCommand.Execute(ViewType.Login);
         }
+
+        public override void UpdateBindings()
+        {
+            base.UpdateBindings();
+        }
     }
 }

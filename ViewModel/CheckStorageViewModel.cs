@@ -11,18 +11,15 @@ namespace CourseWorkApplication.ViewModel
     {
         public IEnumerable<ShopStorageProduct> ShopStorageProducts { get; set; }
 
-        public ICollectionView ShopStorageProductsView { get; set; }
-
         private IHttpAPIHelper<ShopStorageProduct> httpAPIHelper;
 
         public CheckStorageViewModel()
         {
             httpAPIHelper = new HttpAPIHelper<ShopStorageProduct>();
-            LoadPurchaseOrders();
-            ShopStorageProductsView = CollectionViewSource.GetDefaultView(ShopStorageProducts);
+            LoadStorageItems();
         }
 
-        public async void LoadPurchaseOrders()
+        public async void LoadStorageItems()
         {
             try
             {
@@ -33,6 +30,12 @@ namespace CourseWorkApplication.ViewModel
             {
                 Console.WriteLine(ex.Message);
             }
+        }
+
+        public override void UpdateBindings()
+        {
+            base.UpdateBindings();
+            LoadStorageItems();
         }
     }
 }

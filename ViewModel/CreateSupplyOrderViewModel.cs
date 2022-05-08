@@ -8,5 +8,10 @@ namespace CourseWorkApplication.ViewModel
 {
     public class CreateSupplyOrderViewModel : ViewModelBase
     {
+
+        public override void UpdateBindings()
+        {
+            base.UpdateBindings();
+        }
     }
 }

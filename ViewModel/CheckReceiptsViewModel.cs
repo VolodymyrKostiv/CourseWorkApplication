@@ -29,5 +29,10 @@ namespace CourseWorkApplication.ViewModel
                 Console.WriteLine(ex.Message);
             }
         }
+
+        public override void UpdateBindings()
+        {
+            base.UpdateBindings();
+        }
     }
 }

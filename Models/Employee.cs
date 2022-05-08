@@ -17,6 +17,8 @@ namespace CourseWorkApplication.Models
 
         public virtual EmployeeType EmployeeType { get; set; } = null!;
         public virtual Shop Shop { get; set; } = null!;
+        public virtual LoginDatum LoginDatum { get; set; } = null!;
+        public virtual PersonalDatum PersonalDatum { get; set; } = null!;
         public virtual ICollection<PurchaseOrder> PurchaseOrders { get; set; }
         public virtual ICollection<SupplyOrder> SupplyOrders { get; set; }
     }

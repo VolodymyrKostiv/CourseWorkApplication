@@ -1,4 +1,5 @@
 ﻿using CourseWorkApplication.Services.AuthentificationServices;
+using CourseWorkApplication.Services.ReceiptServices;
 using CourseWorkApplication.State.Authentificators;
 using CourseWorkApplication.State.Navigators;
 using CourseWorkApplication.ViewModel;
@@ -37,6 +38,7 @@ namespace CourseWorkApplication
             services.AddSingleton<INavigator, Navigator>();
             services.AddSingleton<IAuthenticator, Authenticator>();
             services.AddSingleton<IAuthentificationService, AuthentificationService>();
+            services.AddSingleton<IReceiptService, ReceiptService>();
 
             services.AddSingleton<IViewModelAbstractFactory, ViewModelAbstractFactory>();
             services.AddSingleton<IViewModelFactory<CheckReceiptsViewModel>, CheckReceiptsViewModelFactory>();

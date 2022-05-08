@@ -31,5 +31,10 @@ namespace CourseWorkApplication.ViewModel
             }
         }
 
+        public override void UpdateBindings()
+        {
+            base.UpdateBindings();
+            OnPropertyChanged(nameof(Username));
+        }
     }
 }
