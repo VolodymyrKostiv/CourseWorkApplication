@@ -10,16 +10,16 @@ namespace CourseWorkApplication.State.Navigators
 {
     public enum ViewType
     {
-        CreateReceipt,
         CheckReceipts,
-        CreateSupplyOrder,
-        CheckSupplyOrders,
         CheckStorage,
+        CheckSupplyOrders,
+        CreateReceipt,
+        CreateSupplyOrder,
+        Login,
     }
 
     public interface INavigator
     {
         ViewModelBase CurrentViewModel { get; set; }
-        ICommand UpdateCurrentViewModelCommand { get; }
     }
 }

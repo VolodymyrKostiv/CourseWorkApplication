@@ -1,5 +1,7 @@
-﻿using CourseWorkApplication.State.Navigators;
+﻿using CourseWorkApplication.State.Authentificators;
+using CourseWorkApplication.State.Navigators;
 using CourseWorkApplication.ViewModel;
+using CourseWorkApplication.ViewModel.Factories;
 using System;
 using System.Windows.Input;
 
@@ -8,11 +10,13 @@ namespace CourseWorkApplication.Commands
     public class UpdateCurrentViewModelCommand : ICommand
     {
         public event EventHandler? CanExecuteChanged;
-        private INavigator _navigator;
+        private readonly INavigator _navigator;
+        private readonly IViewModelAbstractFactory _viewModelFactory;
 
-        public UpdateCurrentViewModelCommand(INavigator navigator)
+        public UpdateCurrentViewModelCommand(INavigator navigator, IViewModelAbstractFactory viewModelFactory)
         {
             _navigator = navigator;
+            _viewModelFactory = viewModelFactory;
         }
 
         public bool CanExecute(object? parameter)
@@ -24,26 +28,7 @@ namespace CourseWorkApplication.Commands
         {
             if (CanExecute(parameter) && parameter is ViewType viewType)
             {
-                switch (viewType)
-                {
-                    case ViewType.CreateReceipt:
-                        _navigator.CurrentViewModel = new CreateReceiptViewModel();
-                        break;
-                    case ViewType.CheckReceipts:
-                        _navigator.CurrentViewModel = new CheckReceiptsViewModel();
-                        break;
-                    case ViewType.CreateSupplyOrder:
-                        _navigator.CurrentViewModel = new CreateSupplyOrderViewModel();
-                        break;
-                    case ViewType.CheckSupplyOrders:
-                        _navigator.CurrentViewModel = new CheckSupplyOrdersViewModel();
-                        break;
-                    case ViewType.CheckStorage:
-                        _navigator.CurrentViewModel = new CheckStorageViewModel();
-                        break;
-                    default:
-                        break;
-                }
+                _navigator.CurrentViewModel = _viewModelFactory.CreateViewModel(viewType);
             }
         }
     }

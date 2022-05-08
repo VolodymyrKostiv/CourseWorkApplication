@@ -22,11 +22,23 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Visibility="{Binding IsSeller, Converter={StaticResource BoolToVisibility}}">
-            <controls:SellerNavigationBar DataContext="{Binding Navigator}" />
+        <Grid Grid.Row="0" DataContext="{Binding Navigator}">
+            <Grid.Style>
+                <Style TargetType="Grid">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Authenticator.IsLoggedIn}" Value="False">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
         </Grid>
-        <Grid Grid.Row="0" Visibility="{Binding IsSeller, Converter={StaticResource BoolToVisibilityInverse}}">
-            <controls:ManagerNavigationBar DataContext="{Binding Navigator}" />
+
+        <Grid Grid.Row="0" Visibility="{Binding Authenticator.IsSeller, Converter={StaticResource BoolToVisibility}}">
+            <controls:SellerNavigationBar/>
+        </Grid>
+        <Grid Grid.Row="0" Visibility="{Binding Authenticator.IsManager, Converter={StaticResource BoolToVisibility}}">
+            <controls:ManagerNavigationBar/>
         </Grid>
         <ContentControl Grid.Row="1" Content="{Binding Navigator.CurrentViewModel}" />
     </Grid>

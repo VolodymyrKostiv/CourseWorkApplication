@@ -24,7 +24,6 @@ namespace CourseWorkApplication
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainViewModel();
         }
     }
 }

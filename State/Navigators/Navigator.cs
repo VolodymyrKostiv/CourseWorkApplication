@@ -1,6 +1,7 @@
 ﻿using CourseWorkApplication.Commands;
 using CourseWorkApplication.Models;
 using CourseWorkApplication.ViewModel;
+using CourseWorkApplication.ViewModel.Factories;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,6 +15,7 @@ namespace CourseWorkApplication.State.Navigators
     public class Navigator : ObservableObject, INavigator
     {
         private ViewModelBase _currentViewModel;
+
         public ViewModelBase CurrentViewModel
         {
             get => _currentViewModel; 
@@ -23,7 +25,5 @@ namespace CourseWorkApplication.State.Navigators
                 OnPropertyChanged(nameof(CurrentViewModel));
             }
         }
-
-        public ICommand UpdateCurrentViewModelCommand => new UpdateCurrentViewModelCommand(this);
     }
 }

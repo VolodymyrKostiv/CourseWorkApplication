@@ -24,7 +24,9 @@
             <DataTemplate DataType="{x:Type viewmodel:CheckStorageViewModel}">
                 <view:CheckStorageView />
             </DataTemplate>
+            <DataTemplate DataType="{x:Type viewmodel:LoginViewModel}">
+                <view:LoginView LoginCommand="{Binding LoginCommand}" />
+            </DataTemplate>
         </ResourceDictionary>
     </Application.Resources>
-
 </Application>
