@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace CourseWorkApplication.View
 {
@@ -23,6 +24,20 @@ namespace CourseWorkApplication.View
         public CreateReceiptView()
         {
             InitializeComponent();
+            StartClock();
+        }
+
+        private void StartClock()
+        {
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Tick += TickEvent;
+            timer.Start();
+        }
+
+        private void TickEvent(object sender, EventArgs s)
+        {
+            txbTimer.Text = DateTime.UtcNow.ToString();
         }
     }
 }

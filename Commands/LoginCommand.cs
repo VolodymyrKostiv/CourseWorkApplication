@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace CourseWorkApplication.Commands
@@ -37,6 +38,10 @@ namespace CourseWorkApplication.Commands
             if (success)
             {
                 _renavigator.Renavigate();
+            }
+            else
+            {
+                MessageBox.Show("Wrong login or password", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

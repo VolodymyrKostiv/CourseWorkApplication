@@ -58,19 +58,6 @@ namespace CourseWorkApplication.Helpers
         {
             T result = default(T);
 
-            //var Content = JsonConvert.SerializeObject(postObject, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Serialize });
-            //var buffer = System.Text.Encoding.UTF8.GetBytes(Content);
-            //var ByteContent = new ByteArrayContent(buffer);
-            //ByteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            //var response = Client.PostAsync(BaseURl + apiUrl, ByteContent).Result;
-
-            //var json = JsonConvert.SerializeObject(postObject);
-            //var data = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
-            //var response = await Client.PostAsync(BaseURl + apiUrl, data);
-
-            //var json = Newtonsoft.Json.JsonConvert.SerializeObject(postObject);
-            //var data = new System.Net.Http.StringContent(json, System.Text.Encoding.UTF8, "application/json");
-            //var response = await Client.PostAsJsonAsync<T>(apiUrl, postObject);
             var response = await Client.PostAsJsonAsync(apiUrl, postObject);
 
             if (response.IsSuccessStatusCode)

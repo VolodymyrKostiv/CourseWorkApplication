@@ -1,4 +1,5 @@
-﻿using CourseWorkApplication.Helpers;
+﻿using CourseWorkApplication.DTOs;
+using CourseWorkApplication.Helpers;
 using CourseWorkApplication.Models;
 using System;
 using System.Collections.Generic;
@@ -10,14 +11,14 @@ namespace CourseWorkApplication.Services.ReceiptServices
 {
     public class ReceiptService : IReceiptService
     {
-        private IHttpAPIHelper<PurchaseOrder> httpAPIHelper;
+        private IHttpAPIHelper<PurchaseOrderDTO> httpAPIHelper;
 
         public ReceiptService()
         {
-            httpAPIHelper = new HttpAPIHelper<PurchaseOrder>();
+            httpAPIHelper = new HttpAPIHelper<PurchaseOrderDTO>();
         }
 
-        public async Task<bool> CreateReceipt(PurchaseOrder order)
+        public async Task<bool> CreateReceipt(PurchaseOrderDTO order)
         {
             if (order == null)
             {

@@ -16,7 +16,7 @@
             </ResourceDictionary>
         </Grid.Resources>
         <DataGrid Width="Auto"
-                  MaxHeight="600"
+                  Height="Auto"
                   AutoGenerateColumns="False"
                   CanUserAddRows="False"
                   ColumnWidth="Auto"

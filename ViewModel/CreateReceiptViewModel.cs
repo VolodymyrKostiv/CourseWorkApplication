@@ -1,4 +1,5 @@
 ﻿using CourseWorkApplication.Commands;
+using CourseWorkApplication.DTOs;
 using CourseWorkApplication.Helpers;
 using CourseWorkApplication.Models;
 using CourseWorkApplication.Services.ReceiptServices;
@@ -16,7 +17,16 @@ namespace CourseWorkApplication.ViewModel
 {
     public class CreateReceiptViewModel : ViewModelBase
     {
-        public ObservableCollection<ShopStorageProduct> ShopStorageProducts { get; set; }
+        private ObservableCollection<ShopStorageProduct> _shopStorageProducts;
+        public ObservableCollection<ShopStorageProduct> ShopStorageProducts 
+        {
+            get => _shopStorageProducts;
+            set
+            {
+                _shopStorageProducts = value;
+                OnPropertyChanged(nameof(ShopStorageProducts));
+            }
+        }
 
         private ObservableCollection<PurchaseOrderProduct> _purchaseOrderProducts;
         public ObservableCollection<PurchaseOrderProduct> PurchaseOrderProducts 
@@ -179,21 +189,30 @@ namespace CourseWorkApplication.ViewModel
 
         public async void FinishReceipt(object? parameter)
         {
-            if (MessageBox.Show("Do you want to save this receipt?", "Question", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK)
+            if (Order.PurchaseOrderProducts.Count != 0 && MessageBox.Show("Do you want to save this receipt?", "Question", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK)
             {
-                Order.Employee = null;
                 decimal total = 0;
+                PurchaseOrderDTO purchaseOrderDTO = new PurchaseOrderDTO() { DateTime = Order.DateTime, EmployeeId = Order.EmployeeId};
 
                 foreach (PurchaseOrderProduct prod in Order.PurchaseOrderProducts)
                 {
                     total += prod.Price;
-                    prod.PurchaseOrder = null;
+                    PurchaseOrderProductDTO orderProductDTO = new PurchaseOrderProductDTO() 
+                    { 
+                        ProductId = prod.ProductId, 
+                        Quantity = prod.Quantity,
+                        Price = prod.Price,
+                    };
+                    (purchaseOrderDTO.PurchaseOrderProducts as HashSet<PurchaseOrderProductDTO>).Add(orderProductDTO);
                 }
-                Order.Price = total;
 
-                if (await _receiptService.CreateReceipt(Order))
+                Order.Price = total;
+                purchaseOrderDTO.Price = Order.Price; 
+
+                if (await _receiptService.CreateReceipt(purchaseOrderDTO))
                 {
-                    //
+                    MessageBox.Show("Receipt successfully created", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    UpdateBindings();
                 }
                 else
                 {
@@ -204,7 +223,7 @@ namespace CourseWorkApplication.ViewModel
 
         public void ClearReceipt(object? parameter)
         {
-            if (MessageBox.Show("Do you really want to clear the receipt?", "Question", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK)
+            if ((parameter != null && (bool)parameter == true) || MessageBox.Show("Do you really want to clear the receipt?", "Question", MessageBoxButton.OKCancel, MessageBoxImage.Warning) == MessageBoxResult.OK)
             {
                 ClearOrder();
                 PurchaseOrderProducts = null;
@@ -231,6 +250,7 @@ namespace CourseWorkApplication.ViewModel
         {
             base.UpdateBindings();
             OnPropertyChanged(nameof(PurchaseOrderProducts));
+            OnPropertyChanged(nameof(ShopStorageProducts));
         }
     }
 }
