@@ -1,5 +1,7 @@
-﻿using CourseWorkApplication.Helpers;
+﻿using CourseWorkApplication.Commands;
+using CourseWorkApplication.Helpers;
 using CourseWorkApplication.Models;
+using CourseWorkApplication.State.Authentificators;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,22 +12,47 @@ namespace CourseWorkApplication.ViewModel
 {
     public class CheckSupplyOrdersViewModel : ViewModelBase
     {
-        public IEnumerable<SupplyOrder> ShopSupplyOrders { get; set; }
+        public IEnumerable<SupplyOrder> SupplyOrders { get; set; }
+        private IHttpAPIHelper<SupplyOrder> _httpAPIHelper;
+        private readonly IAuthenticator _authenticator;
 
-        private IHttpAPIHelper<SupplyOrder> httpAPIHelper;
+        public RelayCommand SelectShowSupplyOrder { get; set; }
 
-        public CheckSupplyOrdersViewModel()
+        private SupplyOrder _selectedSupplyOrder;
+        public SupplyOrder SelectedSupplyOrder
         {
-            httpAPIHelper = new HttpAPIHelper<SupplyOrder>();
+            get => _selectedSupplyOrder;
+            set
+            {
+                _selectedSupplyOrder = value;
+                OnPropertyChanged(nameof(SelectedSupplyOrder));
+            }
+        }
+
+        public CheckSupplyOrdersViewModel(IAuthenticator authenticator)
+        {
+            _authenticator = authenticator;
+            _httpAPIHelper = new HttpAPIHelper<SupplyOrder>();
+            CreateCommands();
             LoadSupplyOrders();
+        }
+
+        private void CreateCommands()
+        {
+            SelectShowSupplyOrder = new RelayCommand(ShowSupplyOrder);
+        }
+
+        public void ShowSupplyOrder(object? parameter)
+        {
+            //
         }
 
         public async void LoadSupplyOrders()
         {
             try
             {
-                ShopSupplyOrders = await httpAPIHelper.GetMultipleItemsRequest("supplyOrders?employeeID=1");
-                OnPropertyChanged(nameof(ShopSupplyOrders));
+                SupplyOrders = await _httpAPIHelper.GetMultipleItemsRequest($"supplyOrders?employeeID={_authenticator.CurrentEmployee.EmployeeId}");
+                OnPropertyChanged(nameof(SupplyOrders));
             }
             catch (Exception ex)
             {
@@ -37,6 +64,7 @@ namespace CourseWorkApplication.ViewModel
         {
             base.UpdateBindings();
             LoadSupplyOrders();
+            OnPropertyChanged(nameof(SupplyOrders));
         }
     }
 }

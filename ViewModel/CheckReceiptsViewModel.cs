@@ -1,4 +1,5 @@
-﻿using CourseWorkApplication.Helpers;
+﻿using CourseWorkApplication.Commands;
+using CourseWorkApplication.Helpers;
 using CourseWorkApplication.Models;
 using CourseWorkApplication.State.Authentificators;
 using System;
@@ -14,14 +15,16 @@ namespace CourseWorkApplication.ViewModel
         private readonly IAuthenticator _authenticator;
         private IHttpAPIHelper<PurchaseOrder> httpAPIHelper;
 
-        private IEnumerable<string> _purchaseProductsFromOrders;
-        public IEnumerable<string> PurchasedProductsFromOrder 
+        public RelayCommand SelectShowProductsFromOrder { get; set; }
+
+        private PurchaseOrder _selectedPurchaseOrder;
+        public PurchaseOrder SelectedPurchaseOrder
         {
-            get => _purchaseProductsFromOrders;
+            get => _selectedPurchaseOrder;
             set
             {
-                _purchaseProductsFromOrders = value;
-                OnPropertyChanged(nameof(PurchasedProductsFromOrder));
+                _selectedPurchaseOrder = value;
+                OnPropertyChanged(nameof(SelectedPurchaseOrder));
             }
         }
 
@@ -29,8 +32,18 @@ namespace CourseWorkApplication.ViewModel
         {
             _authenticator = authenticator;
             httpAPIHelper = new HttpAPIHelper<PurchaseOrder>();
-            PurchasedProductsFromOrder = new List<string>();
             UpdateBindings();
+            CreateCommands();
+        }
+
+        private void CreateCommands()
+        {
+            SelectShowProductsFromOrder = new RelayCommand(ShowProductsFromOrder);
+        }
+
+        public void ShowProductsFromOrder(object? parameter)
+        {
+            //
         }
 
         public async Task LoadPurchaseOrders()
@@ -38,7 +51,6 @@ namespace CourseWorkApplication.ViewModel
             try
             {
                 PurchaseOrders = await httpAPIHelper.GetMultipleItemsRequest($"purchaseOrders?employeeID={_authenticator.CurrentEmployee.EmployeeId}");
-                MergeProductsFromOrders();
                 OnPropertyChanged(nameof(PurchaseOrders));
             }
             catch (Exception ex) 
@@ -47,30 +59,11 @@ namespace CourseWorkApplication.ViewModel
             }
         }
 
-        private void MergeProductsFromOrders()
-        {
-            List<string> prods = new List<string>();
-            foreach (PurchaseOrder purchaseOrder in PurchaseOrders)
-            {
-                string products = string.Empty;
-                foreach (PurchaseOrderProduct purchaseProduct in purchaseOrder.PurchaseOrderProducts)
-                {
-                    string temp = "Name - " + purchaseProduct.Product.Title + ", Quantity - " + 
-                        purchaseProduct.Quantity + ", Price per unit - " + purchaseProduct.Product.Price + "; ";
-                    products += temp;
-                }
-
-                prods.Add(products);
-            }
-            _purchaseProductsFromOrders = prods;
-        }
-
         public override void UpdateBindings()
         {
             base.UpdateBindings();
             LoadPurchaseOrders();
             OnPropertyChanged(nameof(PurchaseOrders));
-            OnPropertyChanged(nameof(PurchasedProductsFromOrder));
         }
     }
 }

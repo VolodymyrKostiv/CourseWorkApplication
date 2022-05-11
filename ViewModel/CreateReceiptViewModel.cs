@@ -2,7 +2,9 @@
 using CourseWorkApplication.DTOs;
 using CourseWorkApplication.Helpers;
 using CourseWorkApplication.Models;
+using CourseWorkApplication.Services.ProductServices;
 using CourseWorkApplication.Services.ReceiptServices;
+using CourseWorkApplication.Services.StoragesServices;
 using CourseWorkApplication.State.Authentificators;
 using System;
 using System.Collections.Generic;
@@ -39,8 +41,8 @@ namespace CourseWorkApplication.ViewModel
             }
         }
         
-        private IHttpAPIHelper<ShopStorageProduct> httpAPIHelper;
         private readonly IReceiptService _receiptService;
+        private readonly IStorageService _storageService;
 
         public DateTime CurrentDate => DateTime.UtcNow;
         public string ShopAddress => CurrentEmployee?.Shop?.Address ?? " --- ";
@@ -97,10 +99,10 @@ namespace CourseWorkApplication.ViewModel
             }
         }
 
-        public CreateReceiptViewModel(IAuthenticator authenticator, IReceiptService receiptService)
+        public CreateReceiptViewModel(IAuthenticator authenticator, IReceiptService receiptService, IStorageService storageService)
         {
             CurrentEmployee = authenticator.CurrentEmployee;
-            httpAPIHelper = new HttpAPIHelper<ShopStorageProduct>();
+            _storageService = storageService;
             _receiptService = receiptService;
 
             ClearOrder();
@@ -130,7 +132,9 @@ namespace CourseWorkApplication.ViewModel
             ShopStorageProduct selectedShopStorageProduct = parameter as ShopStorageProduct;
 
             if (Order.PurchaseOrderProducts == null)
+            {
                 Order.PurchaseOrderProducts = new List<PurchaseOrderProduct>();
+            }
 
             PurchaseOrderProduct prod = new PurchaseOrderProduct()
             {
@@ -192,7 +196,11 @@ namespace CourseWorkApplication.ViewModel
             if (Order.PurchaseOrderProducts.Count != 0 && MessageBox.Show("Do you want to save this receipt?", "Question", MessageBoxButton.OKCancel, MessageBoxImage.Question) == MessageBoxResult.OK)
             {
                 decimal total = 0;
-                PurchaseOrderDTO purchaseOrderDTO = new PurchaseOrderDTO() { DateTime = Order.DateTime, EmployeeId = Order.EmployeeId};
+                PurchaseOrderDTO purchaseOrderDTO = new PurchaseOrderDTO() 
+                { 
+                    DateTime = Order.DateTime, 
+                    EmployeeId = Order.EmployeeId
+                };
 
                 foreach (PurchaseOrderProduct prod in Order.PurchaseOrderProducts)
                 {
@@ -231,19 +239,12 @@ namespace CourseWorkApplication.ViewModel
             }
         }
 
-        private async void LoadStorageItems()
+        private async Task LoadStorageItems()
         {
-            try
-            {
-                IEnumerable<ShopStorageProduct> res = await httpAPIHelper.GetMultipleItemsRequest($"storages/employee?employeeID={CurrentEmployee.EmployeeId}");
-                ShopStorageProducts = new ObservableCollection<ShopStorageProduct>(res);
-                OnPropertyChanged(nameof(ShopStorageProducts));
-                UpdateBindings();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
+            IEnumerable<ShopStorageProduct> res = await _storageService.LoadProductsFromStorage(CurrentEmployee.EmployeeId);
+            ShopStorageProducts = new ObservableCollection<ShopStorageProduct>(res);
+            OnPropertyChanged(nameof(ShopStorageProducts));
+            UpdateBindings();
         }
 
         public override void UpdateBindings()

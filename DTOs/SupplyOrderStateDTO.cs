@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace CourseWorkApplication.DTOs
 {
-    public class PurchaseProductDTO
+    public class SupplyOrderStateDTO
     {
-
+        public int SupplyOrderStateId { get; set; }
+        public string Title { get; set; }
     }
 }

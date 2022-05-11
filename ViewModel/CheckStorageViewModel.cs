@@ -12,14 +12,13 @@ namespace CourseWorkApplication.ViewModel
     public class CheckStorageViewModel : ViewModelBase
     {
         public IEnumerable<ShopStorageProduct> ShopStorageProducts { get; set; }
-
         private readonly IAuthenticator _authenticator;
-        private IHttpAPIHelper<ShopStorageProduct> httpAPIHelper;
+        private IHttpAPIHelper<ShopStorageProduct> _httpAPIHelper;
 
         public CheckStorageViewModel(IAuthenticator authenticator)
         {
             _authenticator = authenticator;
-            httpAPIHelper = new HttpAPIHelper<ShopStorageProduct>();
+            _httpAPIHelper = new HttpAPIHelper<ShopStorageProduct>();
             UpdateBindings();
         }
 
@@ -27,7 +26,7 @@ namespace CourseWorkApplication.ViewModel
         {
             try
             {
-                ShopStorageProducts = await httpAPIHelper.GetMultipleItemsRequest($"storages/employee?employeeID={_authenticator.CurrentEmployee.EmployeeId}");
+                ShopStorageProducts = await _httpAPIHelper.GetMultipleItemsRequest($"storages/employee?employeeID={_authenticator.CurrentEmployee.EmployeeId}");
                 OnPropertyChanged(nameof(ShopStorageProducts));
             }
             catch (Exception ex)

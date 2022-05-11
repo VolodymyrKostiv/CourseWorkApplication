@@ -19,6 +19,7 @@
                   Height="Auto"
                   AutoGenerateColumns="False"
                   CanUserAddRows="False"
+                  CanUserDeleteRows="False"
                   ColumnWidth="Auto"
                   IsReadOnly="True"
                   ItemsSource="{Binding ShopStorageProducts}"
