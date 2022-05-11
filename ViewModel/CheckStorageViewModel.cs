@@ -1,8 +1,10 @@
 ﻿using CourseWorkApplication.Helpers;
 using CourseWorkApplication.Models;
+using CourseWorkApplication.State.Authentificators;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows.Data;
 
 namespace CourseWorkApplication.ViewModel
@@ -11,19 +13,21 @@ namespace CourseWorkApplication.ViewModel
     {
         public IEnumerable<ShopStorageProduct> ShopStorageProducts { get; set; }
 
+        private readonly IAuthenticator _authenticator;
         private IHttpAPIHelper<ShopStorageProduct> httpAPIHelper;
 
-        public CheckStorageViewModel()
+        public CheckStorageViewModel(IAuthenticator authenticator)
         {
+            _authenticator = authenticator;
             httpAPIHelper = new HttpAPIHelper<ShopStorageProduct>();
-            LoadStorageItems();
+            UpdateBindings();
         }
 
-        public async void LoadStorageItems()
+        public async Task LoadStorageItems()
         {
             try
             {
-                ShopStorageProducts = await httpAPIHelper.GetMultipleItemsRequest("storages/employee?employeeID=1");
+                ShopStorageProducts = await httpAPIHelper.GetMultipleItemsRequest($"storages/employee?employeeID={_authenticator.CurrentEmployee.EmployeeId}");
                 OnPropertyChanged(nameof(ShopStorageProducts));
             }
             catch (Exception ex)

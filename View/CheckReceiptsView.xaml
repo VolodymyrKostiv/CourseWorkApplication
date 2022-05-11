@@ -10,6 +10,51 @@
              d:DesignWidth="800"
              mc:Ignorable="d">
     <Grid>
-        <DataGrid AutoGenerateColumns="True" ItemsSource="{Binding PurchaseOrders}" />
+        <Grid.Resources>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary Source="/Styles/DataGridStyles.xaml" />
+                </ResourceDictionary.MergedDictionaries>
+            </ResourceDictionary>
+        </Grid.Resources>
+        <DataGrid AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  IsReadOnly="True"
+                  ItemsSource="{Binding PurchaseOrders}"
+                  Style="{StaticResource DataGridStyle}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="1*"
+                                    Binding="{Binding Path=PurchaseOrderId}"
+                                    Header="Order ID">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Width="2*"
+                                    Binding="{Binding Path=DateTime}"
+                                    Header="Date and Time">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Width="2*"
+                                    Binding="{Binding Path=Price}"
+                                    Header="Price">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextAlignment" Value="Right" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Width="12*"
+                                    Binding="{Binding PurchasedProductsFromOrder}"
+                                    Header="Purchased products" />
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </UserControl>
