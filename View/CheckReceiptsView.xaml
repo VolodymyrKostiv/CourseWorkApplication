@@ -19,7 +19,7 @@
         </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
 
         <DataGrid Grid.Column="0"
@@ -34,6 +34,9 @@
                 <MouseBinding Command="{Binding SelectShowProductsFromOrder}"
                               CommandParameter="{Binding SelectedPurchaseOrder}"
                               Gesture="LeftClick" />
+                <MouseBinding Command="{Binding SelectDeletePurchaseOrder}"
+                              CommandParameter="{Binding SelectedPurchaseOrder}"
+                              Gesture="LeftDoubleClick" />
             </DataGrid.InputBindings>
             <DataGrid.Columns>
                 <DataGridTextColumn Width="1*"
@@ -73,11 +76,24 @@
                   ItemsSource="{Binding SelectedPurchaseOrder.PurchaseOrderProducts}"
                   Style="{StaticResource DataGridStyle}">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Path=ProductId}" Header="ID" />
-                <DataGridTextColumn Binding="{Binding Path=Product.Title}" Header="Title" />
-                <DataGridTextColumn Binding="{Binding Path=Quantity}" Header="Quantity" />
-                <DataGridTextColumn Binding="{Binding Path=Product.UnitOfMeasurement.Title}" Header="Unit" />
-                <DataGridTextColumn Binding="{Binding Path=Product.Price}" Header="Price" />
+                <DataGridTextColumn Width="1*"
+                                    Binding="{Binding Path=ProductId}"
+                                    Header="ID">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Width="5*"
+                                    Binding="{Binding Path=Product.Title}"
+                                    Header="Title" />
+                <DataGridTextColumn Width="2*"
+                                    Binding="{Binding Path=Quantity}"
+                                    Header="Quantity" />
+                <DataGridTextColumn Width="3*"
+                                    Binding="{Binding Path=Product.Price}"
+                                    Header="Price" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

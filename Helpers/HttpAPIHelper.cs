@@ -81,12 +81,7 @@ namespace CourseWorkApplication.Helpers
         {
             T result = default(T);
 
-            var Content = JsonConvert.SerializeObject(putObject);
-            var buffer = System.Text.Encoding.UTF8.GetBytes(Content);
-            var ByteContent = new ByteArrayContent(buffer);
-            ByteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-
-            var response = await Client.PutAsync(BaseURl + apiUrl, ByteContent).ConfigureAwait(false);
+            var response = await Client.PutAsJsonAsync(BaseURl + apiUrl, putObject);
 
             if (response.IsSuccessStatusCode)
             {
@@ -105,7 +100,7 @@ namespace CourseWorkApplication.Helpers
             return result;
         }
 
-        public async Task<T> DeleteRequest(Uri apiUrl)
+        public async Task<T> DeleteRequest(string apiUrl)
         {
             T result = default(T);
             var response = await Client.DeleteAsync(BaseURl + apiUrl).ConfigureAwait(false);

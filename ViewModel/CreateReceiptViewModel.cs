@@ -150,6 +150,7 @@ namespace CourseWorkApplication.ViewModel
                 Order.PurchaseOrderProducts.Add(prod);
                 PurchaseOrderProducts = new ObservableCollection<PurchaseOrderProduct>(Order.PurchaseOrderProducts);
             }
+
             UpdateBindings();
         }
 

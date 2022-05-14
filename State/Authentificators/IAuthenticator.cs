@@ -16,7 +16,6 @@ namespace CourseWorkApplication.State.Authentificators
         bool IsLoggedIn { get; }
         bool IsSeller { get; }
         bool IsManager { get; }
-
         Task<bool> LogIn(string username, string password);
         void LogOut();
     }

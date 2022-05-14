@@ -35,10 +35,10 @@
         </Grid>
 
         <Grid Grid.Row="0" Visibility="{Binding Authenticator.IsSeller, Converter={StaticResource BoolToVisibility}}">
-            <controls:SellerNavigationBar/>
+            <controls:SellerNavigationBar />
         </Grid>
         <Grid Grid.Row="0" Visibility="{Binding Authenticator.IsManager, Converter={StaticResource BoolToVisibility}}">
-            <controls:ManagerNavigationBar/>
+            <controls:ManagerNavigationBar />
         </Grid>
         <ContentControl Grid.Row="1" Content="{Binding Navigator.CurrentViewModel}" />
     </Grid>

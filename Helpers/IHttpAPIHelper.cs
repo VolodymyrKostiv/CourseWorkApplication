@@ -13,6 +13,6 @@ namespace CourseWorkApplication.Helpers
         Task<T> GetSingleItemRequest(string apiUrl, T sendObject);
         Task<T> PostRequest(string apiUrl, T postObject);
         Task<T> PutRequest(string apiUrl, T putObject);
-        Task<T> DeleteRequest(Uri apiUrl);
+        Task<T> DeleteRequest(string apiUrl);
     }
 }

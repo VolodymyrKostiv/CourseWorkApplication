@@ -24,7 +24,7 @@
             </ResourceDictionary>
         </Grid.Resources>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="2*" />
             <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
         <DataGrid Grid.Column="0"
@@ -36,13 +36,34 @@
                   ItemsSource="{Binding SupplyOrders}"
                   SelectedItem="{Binding SelectedSupplyOrder}"
                   Style="{StaticResource DataGridStyle}">
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Command="{Binding SelectStateReview}"
+                              CommandParameter="{Binding SelectedSupplyOrder}"
+                              Header="Review" />
+                    <MenuItem Command="{Binding SelectStateInProgress}"
+                              CommandParameter="{Binding SelectedSupplyOrder}"
+                              Header="In progress" />
+                    <MenuItem Command="{Binding SelectStateCompleted}"
+                              CommandParameter="{Binding SelectedSupplyOrder}"
+                              Header="Completed" />
+                    <MenuItem Command="{Binding SelectStateCancelled}"
+                              CommandParameter="{Binding SelectedSupplyOrder}"
+                              Header="Cancelled" />
+                </ContextMenu>
+            </DataGrid.ContextMenu>
             <DataGrid.InputBindings>
                 <MouseBinding Command="{Binding SelectShowSupplyOrder}"
                               CommandParameter="{Binding SelectedSupplyOrder}"
                               Gesture="LeftClick" />
+                <MouseBinding Command="{Binding SelectDeleteSupplyOrder}"
+                              CommandParameter="{Binding SelectedSupplyOrder}"
+                              Gesture="LeftDoubleClick" />
             </DataGrid.InputBindings>
             <DataGrid.Columns>
-                <DataGridTextColumn Width="1*" Binding="{Binding Path=SupplyOrderId}">
+                <DataGridTextColumn Width="1*"
+                                    Binding="{Binding Path=SupplyOrderId}"
+                                    Header="ID">
                     <DataGridTextColumn.ElementStyle>
                         <Style TargetType="TextBlock">
                             <Setter Property="TextAlignment" Value="Center" />
@@ -61,6 +82,9 @@
                 <DataGridTextColumn Width="3*"
                                     Binding="{Binding Path=SupplyOrderState.Title}"
                                     Header="State" />
+                <DataGridTextColumn Width="2*"
+                                    Binding="{Binding Path=RequestDate}"
+                                    Header="Request Date" />
             </DataGrid.Columns>
         </DataGrid>
         <DataGrid Grid.Column="1"
@@ -71,10 +95,15 @@
                   ItemsSource="{Binding SelectedSupplyOrder.SupplyOrderProducts}"
                   Style="{StaticResource DataGridStyle}">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Path=ProductId}" Header="ID" />
-                <DataGridTextColumn Binding="{Binding Path=Product.Title}" Header="Title" />
-                <DataGridTextColumn Binding="{Binding Path=Quantity}" Header="Quantity" />
-                <DataGridTextColumn Binding="{Binding Path=Product.UnitOfMeasurement.Title}" Header="Unit" />
+                <DataGridTextColumn Width="1*"
+                                    Binding="{Binding Path=ProductId}"
+                                    Header="ID" />
+                <DataGridTextColumn Width="4*"
+                                    Binding="{Binding Path=Product.Title}"
+                                    Header="Title" />
+                <DataGridTextColumn Width="1*"
+                                    Binding="{Binding Path=Quantity}"
+                                    Header="Quantity" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

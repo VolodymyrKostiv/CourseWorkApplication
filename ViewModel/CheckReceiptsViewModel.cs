@@ -4,18 +4,20 @@ using CourseWorkApplication.Models;
 using CourseWorkApplication.State.Authentificators;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace CourseWorkApplication.ViewModel
 {
     public class CheckReceiptsViewModel : ViewModelBase
     {
-        public IEnumerable<PurchaseOrder> PurchaseOrders { get; set; }
-
+        public ObservableCollection<PurchaseOrder> PurchaseOrders { get; set; }
         private readonly IAuthenticator _authenticator;
         private IHttpAPIHelper<PurchaseOrder> httpAPIHelper;
 
         public RelayCommand SelectShowProductsFromOrder { get; set; }
+        public  RelayCommand SelectDeletePurchaseOrder { get; set; }
 
         private PurchaseOrder _selectedPurchaseOrder;
         public PurchaseOrder SelectedPurchaseOrder
@@ -36,21 +38,50 @@ namespace CourseWorkApplication.ViewModel
             CreateCommands();
         }
 
+
         private void CreateCommands()
         {
             SelectShowProductsFromOrder = new RelayCommand(ShowProductsFromOrder);
+            SelectDeletePurchaseOrder = new RelayCommand(DeletePurchaseOrder);
         }
 
-        public void ShowProductsFromOrder(object? parameter)
+        private async void DeletePurchaseOrder(object obj)
+        {
+            try
+            {
+                var order = obj as PurchaseOrder;
+
+                if (order != null && MessageBox.Show("Do you really want to delete selected order", "Delete order", MessageBoxButton.OKCancel, MessageBoxImage.Warning) == MessageBoxResult.OK)
+                {
+                    if (await httpAPIHelper.DeleteRequest($"purchaseOrders?orderID={order.PurchaseOrderId}") != null)
+                    {
+                        MessageBox.Show("Order successfully deleted", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Error during deleting order", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+
+                    UpdateBindings();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        private void ShowProductsFromOrder(object? parameter)
         {
             //
         }
 
-        public async Task LoadPurchaseOrders()
+        private async Task LoadPurchaseOrders()
         {
             try
             {
-                PurchaseOrders = await httpAPIHelper.GetMultipleItemsRequest($"purchaseOrders?employeeID={_authenticator.CurrentEmployee.EmployeeId}");
+                var x = await httpAPIHelper.GetMultipleItemsRequest($"purchaseOrders?employeeID={_authenticator.CurrentEmployee.EmployeeId}");
+                PurchaseOrders = new ObservableCollection<PurchaseOrder>(x);
                 OnPropertyChanged(nameof(PurchaseOrders));
             }
             catch (Exception ex) 
